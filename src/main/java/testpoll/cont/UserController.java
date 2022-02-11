@@ -32,11 +32,11 @@ public class UserController {
     }
 
     @PostMapping("/answer/fill")
-    public ResponseEntity fillPoll(@ModelAttribute("pollid") String pollid, @ModelAttribute("answers") ArrayList <String> answers , int ID){
+    public ResponseEntity fillPoll(@ModelAttribute("pollid") String pollid, @ModelAttribute("answers") ArrayList <String> answers ,@ModelAttribute("ID") String ID){
         try {
-            User user = Admin.getInstance().getU(ID);                      // примем, что получаем ответы списком строк, кол-во строк строго равно кол-ву и  порядку вопросов в опросе
+            User user = Admin.getInstance().getU(Integer.getInteger(ID));                      // примем, что получаем ответы списком строк, кол-во строк строго равно кол-ву и  порядку вопросов в опросе
             if (user == null) {
-                user = new User(ID);
+                user = new User(Integer.getInteger(ID));
             }
             user.add(Integer.getInteger(pollid), answers);
             return new ResponseEntity(HttpStatus.OK);
@@ -47,9 +47,9 @@ public class UserController {
     }
 
     @PostMapping("/answer/list")
-    public ResponseEntity listAns( int ID){
+    public ResponseEntity listAns( @ModelAttribute("ID") String ID){
         try {
-            User user = Admin.getInstance().getU(ID);
+            User user = Admin.getInstance().getU(Integer.getInteger(ID));
             if (user != null) {
                 HashMap <Integer , List> answersHashMap = user.getAnswers();    // передаем  всю необходимую для информацию для фронта
                 int countOfDonePolls = answersHashMap.size();

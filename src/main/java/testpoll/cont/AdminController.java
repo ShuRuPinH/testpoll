@@ -40,8 +40,8 @@ public class AdminController {
     }
 
 
-    @PostMapping("/poll/dell/")
-    public ResponseEntity dellPoll(@ModelAttribute("id") String id) {
+    @PostMapping("/poll/del/")
+    public ResponseEntity delPoll(@ModelAttribute("id") String id) {
 
         try {
             Admin.getInstance().del(Integer.getInteger(id));
@@ -69,9 +69,9 @@ public class AdminController {
     //// Работа с вопросами
 
     @PostMapping("/ques/add/")
-    public ResponseEntity addQ(@ModelAttribute("pollid") String pollid,@ModelAttribute("text") String text, @ModelAttribute("type") int type){  // выбрал число для передачи типа , изменить будет не сложно
+    public ResponseEntity addQ(@ModelAttribute("pollid") String pollid,@ModelAttribute("text") String text, @ModelAttribute("type") String type){  // выбрал число для передачи типа , изменить будет не сложно
         try {
-            Question question = new Question(text,type);
+            Question question = new Question(text,Integer.getInteger(type));
             question.setID( Admin.getInstance().getPoll(Integer.getInteger(pollid)).addQ(question));  // присваиваем вопросу ID, его индекс в списке
             return new ResponseEntity(HttpStatus.OK);
         }catch (Exception e){
@@ -92,10 +92,10 @@ public class AdminController {
     }
 
     @PostMapping("/ques/edit/")
-    public ResponseEntity editQ(@ModelAttribute("pollid") String pollid, @ModelAttribute("qid") String qid , @ModelAttribute("text") String text, @ModelAttribute("type") int type){
+    public ResponseEntity editQ(@ModelAttribute("pollid") String pollid, @ModelAttribute("qid") String qid , @ModelAttribute("text") String text, @ModelAttribute("type") String type){
 
         try {
-            Admin.getInstance().getPoll(Integer.getInteger(pollid)).editQ(Integer.getInteger(qid), text, type);
+            Admin.getInstance().getPoll(Integer.getInteger(pollid)).editQ(Integer.getInteger(qid), text, Integer.getInteger(type));
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(e,HttpStatus.BAD_REQUEST);
