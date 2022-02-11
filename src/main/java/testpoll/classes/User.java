@@ -1,20 +1,24 @@
 package testpoll.classes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class User {
-     HashMap <Integer, List > answers;
+
      int ID ;
+     List <Answer> answers;
 
      public User(int ID) {
           this.ID = ID;
-          answers = new HashMap<>();
+          answers = new ArrayList<Answer>();
      }
 
      public boolean add(int pollid, List answers){
           try {
-               answers.add(pollid, answers);
+               Admin.getInstance().getPoll(pollid);
+
+               answers.add(new Answer( Admin.getInstance().getPoll(pollid),answers));
                return true;
           }
           catch (Exception e){
@@ -23,7 +27,7 @@ public class User {
      }
 
 
-     public HashMap<Integer, List> getAnswers() {
+     public List<Answer> getAnswers() {
           return answers;
      }
 }
